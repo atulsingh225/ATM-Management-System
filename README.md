@@ -109,7 +109,7 @@ ATM-Management-System/
 
 ```bash
 # Clone the repository
-git clone https://github.com/atulsingh456/ATM-Management-System.git
+git clone https://github.com/atulsingh225/ATM-Management-System.git
 cd ATM-Management-System
 
 # Create and activate virtual environment
@@ -176,11 +176,11 @@ Set `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` in your Vercel Project Se
 ### **Atul Singh**  
 *Full Stack Developer | Software Engineer | AI & Cloud Enthusiast*
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Atul_Singh-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/atulsingh456)
-[![GitHub](https://img.shields.io/badge/GitHub-atulsingh456-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/atulsingh456)
-[![LeetCode](https://img.shields.io/badge/LeetCode-atulsingh456-FFA116?style=for-the-badge&logo=leetcode&logoColor=black)](https://leetcode.com/u/atulsingh456)
-[![Instagram](https://img.shields.io/badge/Instagram-@atulsingh456-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/atulsingh456)
-[![Email](https://img.shields.io/badge/Email-atulsingh456@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:atulsingh456@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Atul_Singh-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/atul-singh-26b439362)
+[![GitHub](https://img.shields.io/badge/GitHub-atulsingh225-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/atulsingh225)
+[![LeetCode](https://img.shields.io/badge/LeetCode-atulsingh225-FFA116?style=for-the-badge&logo=leetcode&logoColor=black)](https://leetcode.com/u/atulsingh225)
+[![Instagram](https://img.shields.io/badge/Instagram-@atulsinghrajput__07-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/atulsinghrajput_07)
+[![Email](https://img.shields.io/badge/Email-atulsingh782188@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:atulsingh782188@gmail.com)
 
 ---
 
@@ -188,11 +188,11 @@ Set `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` in your Vercel Project Se
 
 | Platform | Profile URL / ID |
 | :--- | :--- |
-| 💼 **LinkedIn** | [linkedin.com/in/atulsingh456](https://www.linkedin.com/in/atulsingh456) |
-| 🐙 **GitHub** | [github.com/atulsingh456](https://github.com/atulsingh456) (`@atulsingh456`) |
-| 🧩 **LeetCode** | [leetcode.com/u/atulsingh456](https://leetcode.com/u/atulsingh456) (`@atulsingh456`) |
-| 📸 **Instagram** | [instagram.com/atulsingh456](https://instagram.com/atulsingh456) (`@atulsingh456`) |
-| 📧 **Email** | [atulsingh456@gmail.com](mailto:atulsingh456@gmail.com) |
+| 💼 **LinkedIn** | [linkedin.com/in/atul-singh-26b439362](https://www.linkedin.com/in/atul-singh-26b439362) |
+| 🐙 **GitHub** | [github.com/atulsingh225](https://github.com/atulsingh225) (`@atulsingh225`) |
+| 🧩 **LeetCode** | [leetcode.com/u/atulsingh225](https://leetcode.com/u/atulsingh225) (`@atulsingh225`) |
+| 📸 **Instagram** | [instagram.com/atulsinghrajput_07](https://instagram.com/atulsinghrajput_07) (`@atulsinghrajput_07`) |
+| 📧 **Email** | [atulsingh782188@gmail.com](mailto:atulsingh782188@gmail.com) |
 
 </div>
 
