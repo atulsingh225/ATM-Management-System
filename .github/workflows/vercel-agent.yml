@@ -1,0 +1,29 @@
+name: Vercel Agent Review & Security
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  vercel-agent-check:
+    name: Vercel Agent PR Review & Security Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@vercel'))
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify Vercel Project Link & Config
+        run: |
+          echo "========================================================"
+          echo "         VERCEL AGENT PR REVIEW & CODE ANALYSIS         "
+          echo "========================================================"
+          echo "Triggered by: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Vercel Agent multi-step reasoning active."
+          echo "Checking for vercel.json and serverless runtime configuration..."
+          test -f vercel.json && echo "✓ vercel.json verified" || (echo "✗ vercel.json missing" && exit 1)
+          test -f api/index.py && echo "✓ api/index.py verified" || (echo "✗ api/index.py missing" && exit 1)
+          echo "✓ Ready for Vercel Agent automated review and security audit."

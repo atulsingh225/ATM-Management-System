@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #080e1c;
+  --foreground: #f2f6ff;
+  --glass: rgba(20, 35, 60, 0.78);
+  --border: rgba(130, 170, 230, 0.18);
+  --primary: #3987ff;
+  --cyan: #35d9e8;
+  --purple: #9b78ff;
+  --green: #35dba5;
+  --red: #ff7189;
+}
+
+body {
+  color: var(--foreground);
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(57,135,255,.18), transparent 35%),
+    radial-gradient(ellipse at 90% 20%, rgba(155,120,255,.13), transparent 35%),
+    radial-gradient(ellipse at 50% 100%, rgba(53,217,232,.08), transparent 40%),
+    var(--bg);
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(8, 14, 28, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #233d66;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
