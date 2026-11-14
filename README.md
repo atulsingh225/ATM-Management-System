@@ -17,8 +17,6 @@ A secure, full-stack ATM and Core Banking Management System featuring a **Custom
 Experience the live application deployed on Vercel:
 
 - 🚀 **Live Banking Application:** **[https://novabank07.vercel.app](https://novabank07.vercel.app)**
-- 👤 **Customer Portal:** [https://novabank07.vercel.app/](https://novabank07.vercel.app/) (Demo Account: `1001` | PIN: `1234`)
-- 🛡️ **Admin Portal:** [https://novabank07.vercel.app/admin/login](https://novabank07.vercel.app/admin/login) (Username: `admin` | Password: `admin123`)
 
 ---
 
@@ -130,10 +128,6 @@ pip install -r requirements.txt
 python app.py
 ```
 Open **`http://127.0.0.1:5000`** in your browser.
-
-#### Demo Credentials:
-- **Customer Login:** Account `1001` | PIN `1234`
-- **Admin Login:** Username `admin` | Password `admin123` (`http://127.0.0.1:5000/admin/login`)
 
 ---
 
