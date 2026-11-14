@@ -16,7 +16,7 @@ A full-stack, secure ATM and Core Banking Management System featuring a **Custom
 
 Experience the live production application deployed on Vercel:
 
-- 🚀 **Live Banking Application:** [https://atm-management-system-atulsingh225.vercel.app](https://atm-management-system-atulsingh225.vercel.app)
+- 🚀 **Live Banking Application:** [https://novabank07.vercel.app](https://novabank07.vercel.app)
 - ⚡ **Deploy Your Own Instance with 1-Click:**
 
 ---
@@ -190,7 +190,7 @@ Set `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` in your Vercel Project Se
 [![LeetCode](https://img.shields.io/badge/LeetCode-atulsingh225-FFA116?style=for-the-badge&logo=leetcode&logoColor=black)](https://leetcode.com/u/atulsingh225)
 [![Instagram](https://img.shields.io/badge/Instagram-@atulsinghrajput__07-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/atulsinghrajput_07)
 [![Email](https://img.shields.io/badge/Email-atulsingh782188@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:atulsingh782188@gmail.com)
-[![Live Website](https://img.shields.io/badge/Live_Website-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://atm-management-system-atulsingh225.vercel.app)
+[![Live Website](https://img.shields.io/badge/Live_Website-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://novabank07.vercel.app)
 
 ---
 
@@ -198,7 +198,7 @@ Set `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` in your Vercel Project Se
 
 | Platform | Profile URL / ID |
 | :--- | :--- |
-| 🌐 **Live Website (Vercel)** | [atm-management-system-atulsingh225.vercel.app](https://atm-management-system-atulsingh225.vercel.app) |
+| 🌐 **Live Website (Vercel)** | [atm-management-system-atulsingh225.vercel.app](https://novabank07.vercel.app) |
 | 💼 **LinkedIn** | [linkedin.com/in/atul-singh-26b439362](https://www.linkedin.com/in/atul-singh-26b439362) |
 | 🐙 **GitHub** | [github.com/atulsingh225](https://github.com/atulsingh225) (`@atulsingh225`) |
 | 🧩 **LeetCode** | [leetcode.com/u/atulsingh225](https://leetcode.com/u/atulsingh225) (`@atulsingh225`) |
