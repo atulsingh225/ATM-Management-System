@@ -1,0 +1,246 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | NovaBank{% endblock %}
+
+{% block content %}
+<div class="bank-dashboard">
+
+    <section class="welcome-row">
+        <div>
+            <span class="eyebrow">PERSONAL BANKING</span>
+            <h1>Welcome, {{ account["holder_name"] }} 👋</h1>
+            <p>Your personal financial overview.</p>
+        </div>
+
+        <div class="secure-status">
+            <span class="status-dot"></span>
+            Secure Session
+        </div>
+    </section>
+
+    <!-- BALANCE CARD -->
+    <section class="bank-balance-card">
+        <div class="balance-top">
+            <div>
+                <span class="balance-label">AVAILABLE BALANCE</span>
+                <div class="balance-amount">
+                    {{ money(account["balance_paise"]) }}
+                </div>
+            </div>
+            <div class="card-chip">▦</div>
+        </div>
+
+        <div class="bank-card-bottom">
+            <div>
+                <span class="balance-label">ACCOUNT HOLDER</span>
+                <strong>{{ account["holder_name"] }}</strong>
+            </div>
+
+            <div>
+                <span class="balance-label">ACCOUNT NUMBER</span>
+                <strong>{{ account["account_number"] }}</strong>
+            </div>
+
+            <div class="visa-label">NOVA<span>BANK</span></div>
+        </div>
+    </section>
+
+    <!-- ACCOUNT DETAILS -->
+    <section class="activity-panel">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">CUSTOMER INFORMATION</span>
+                <h2>My Account Details</h2>
+            </div>
+
+            <span class="secure-status">
+                <span class="status-dot"></span>
+                {{ account["status"]|title }}
+            </span>
+        </div>
+
+        <div class="account-details-grid">
+
+            <div class="detail-box">
+                <span>Account Holder Name</span>
+                <strong>{{ account["holder_name"] }}</strong>
+            </div>
+
+            <div class="detail-box">
+                <span>Account Number</span>
+                <strong>{{ account["account_number"] }}</strong>
+            </div>
+
+            <div class="detail-box">
+                <span>Account ID</span>
+                <strong>{{ account["id"] }}</strong>
+            </div>
+
+            <div class="detail-box">
+                <span>Available Balance</span>
+                <strong>{{ money(account["balance_paise"]) }}</strong>
+            </div>
+
+            <div class="detail-box">
+                <span>Account Status</span>
+                <strong>{{ account["status"]|title }}</strong>
+            </div>
+
+            <div class="detail-box">
+                <span>Account Type</span>
+                <strong>Savings Account</strong>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <section class="quick-actions">
+
+        <a class="quick-action" href="{{ url_for('transaction') }}">
+            <span class="action-icon deposit-icon">↙</span>
+            <span>
+                <strong>Deposit / Withdraw</strong>
+                <small>Manage your money</small>
+            </span>
+            <span class="action-arrow">→</span>
+        </a>
+
+        <a class="quick-action" href="{{ url_for('history') }}">
+            <span class="action-icon history-icon">↻</span>
+            <span>
+                <strong>Transaction History</strong>
+                <small>Review your activity</small>
+            </span>
+            <span class="action-arrow">→</span>
+        </a>
+
+        <a class="quick-action" href="{{ url_for('change_pin') }}">
+            <span class="action-icon security-icon">⌑</span>
+            <span>
+                <strong>Security Settings</strong>
+                <small>Change your PIN</small>
+            </span>
+            <span class="action-arrow">→</span>
+        </a>
+
+    </section>
+
+    <!-- RECENT TRANSACTIONS -->
+    <section class="activity-panel">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">ACCOUNT ACTIVITY</span>
+                <h2>Recent Transactions</h2>
+            </div>
+
+            <a class="view-all" href="{{ url_for('history') }}">
+                View All →
+            </a>
+        </div>
+
+        {% if recent %}
+
+        <div class="activity-list">
+
+            {% for tx in recent %}
+
+            <div class="activity-item">
+
+                <div class="activity-symbol
+                    {% if tx['transaction_type']|lower == 'deposit' %}
+                    activity-in
+                    {% else %}
+                    activity-out
+                    {% endif %}">
+
+                    {% if tx['transaction_type']|lower == 'deposit' %}
+                        ↓
+                    {% else %}
+                        ↑
+                    {% endif %}
+
+                </div>
+
+                <div class="activity-details">
+                    <strong>{{ tx["transaction_type"]|title }}</strong>
+                    <small>{{ format_dt(tx["created_at"]) }}</small>
+                </div>
+
+                <div class="activity-money">
+                    <strong class="{% if tx['transaction_type']|lower == 'deposit' %}money-in{% else %}money-out{% endif %}">
+                        {% if tx["transaction_type"]|lower == "deposit" %}+{% else %}−{% endif %}
+                        {{ money(tx["amount_paise"]) }}
+                    </strong>
+                    <small>{{ tx["reference"] }}</small>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-activity">
+            <div class="empty-icon">↗</div>
+            <h3>No Transactions Yet</h3>
+            <p>Your deposits and withdrawals will appear here.</p>
+
+            <a class="primary-link" href="{{ url_for('transaction') }}">
+                Make Your First Transaction →
+            </a>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- SECURITY NOTE -->
+    <section class="security-note">
+        <span class="security-note-icon">✓</span>
+        <div>
+            <strong>Your Banking Security Matters</strong>
+            <p>Never share your PIN or account credentials with anyone.</p>
+        </div>
+    </section>
+
+    <!-- CLOSE ACCOUNT -->
+    <section class="close-account-panel">
+
+        <div>
+            <span class="eyebrow">ACCOUNT MANAGEMENT</span>
+            <h2>Close Your Account</h2>
+
+            <p>
+                If you no longer wish to use this account,
+                you can permanently close it.
+            </p>
+
+            <p class="close-warning">
+                Your balance must be ₹0 before closure.
+                Transaction records will be retained.
+            </p>
+        </div>
+
+        <form method="POST"
+              action="{{ url_for('close_account') }}"
+              onsubmit="return confirm('Are you sure you want to permanently close this account? This action cannot be undone.');">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <button type="submit" class="close-account-btn">
+                Close My Account
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+{% endblock %}

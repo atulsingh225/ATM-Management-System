@@ -1,0 +1,125 @@
+
+{% extends "base.html" %}
+
+{% block title %}Transactions | NovaBank{% endblock %}
+
+{% block content %}
+<div class="bank-dashboard">
+
+    <div class="welcome-row">
+        <div>
+            <span class="eyebrow">PAYMENTS & TRANSFERS</span>
+            <h1>Manage transactions</h1>
+            <p>Deposit or withdraw funds from your demo account.</p>
+        </div>
+        <a class="primary-link" href="{{ url_for('history') }}">View history →</a>
+    </div>
+
+    <div class="transaction-layout">
+
+        <section class="transaction-main">
+            <div class="activity-panel">
+                <span class="eyebrow">NEW TRANSACTION</span>
+                <h2>Move your money</h2>
+                <p>Select a transaction type and enter the amount.</p>
+
+                <form method="POST" action="{{ url_for('transaction') }}" id="transaction-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    <label for="transaction_type">Transaction type</label>
+                    <div class="transaction-types">
+                        <label class="type-option">
+                            <input type="radio" name="transaction_type" value="deposit" checked>
+                            <span class="type-box">
+                                <span class="type-symbol money-in">↓</span>
+                                <strong>Deposit</strong>
+                                <small>Add funds</small>
+                            </span>
+                        </label>
+
+                        <label class="type-option">
+                            <input type="radio" name="transaction_type" value="withdraw">
+                            <span class="type-box">
+                                <span class="type-symbol money-out">↑</span>
+                                <strong>Withdraw</strong>
+                                <small>Take out funds</small>
+                            </span>
+                        </label>
+                    </div>
+
+                    <label for="amount">Amount (₹)</label>
+                    <div class="amount-input-wrap">
+                        <span>₹</span>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            min="1"
+                            max="1000000"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+                    </div>
+
+                    <div class="amount-presets">
+                        <button type="button" class="preset-btn" data-amount="500">+ ₹500</button>
+                        <button type="button" class="preset-btn" data-amount="1000">+ ₹1,000</button>
+                        <button type="button" class="preset-btn" data-amount="2000">+ ₹2,000</button>
+                        <button type="button" class="preset-btn" data-amount="5000">+ ₹5,000</button>
+                    </div>
+
+                    <div class="transaction-disclaimer">
+                        <span>ⓘ</span>
+                        <p>Demo transaction only. Verify the amount before confirming.</p>
+                    </div>
+
+                    <button type="submit" class="confirm-transaction">
+                        Confirm transaction →
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <aside class="transaction-side">
+            <div class="side-balance-card">
+                <span class="balance-label">AVAILABLE BALANCE</span>
+                <div class="side-balance-value">
+                    ₹{{ "%.2f"|format(account["balance_paise"] / 100) }}
+                </div>
+                <span class="side-account">
+                    Account •••• {{ account["account_number"][-4:] }}
+                </span>
+            </div>
+
+            <div class="activity-panel transaction-info">
+                <h3>Before you continue</h3>
+                <div class="info-row">
+                    <span class="info-check">✓</span>
+                    <p>Check your transaction type.</p>
+                </div>
+                <div class="info-row">
+                    <span class="info-check">✓</span>
+                    <p>Enter an amount greater than zero.</p>
+                </div>
+                <div class="info-row">
+                    <span class="info-check">✓</span>
+                    <p>Ensure sufficient funds for withdrawals.</p>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<script>
+document.querySelectorAll(".preset-btn").forEach(function(button) {
+    button.addEventListener("click", function() {
+        var input = document.getElementById("amount");
+        var current = parseFloat(input.value) || 0;
+        var addVal = parseFloat(button.dataset.amount) || 0;
+        input.value = (current + addVal).toFixed(2);
+    });
+});
+</script>
+{% endblock %}

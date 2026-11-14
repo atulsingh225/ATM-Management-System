@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Customer Transactions | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">OWNER CONTROL PANEL</p>
+        <h1>Customer Transactions</h1>
+        <p class="muted">Detailed transaction history for {{ customer['holder_name'] }}.</p>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <a href="{{ url_for('admin_customers') }}" class="btn-secondary">
+            ← Back to Customers
+        </a>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">
+            Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
+        <div>
+            <h2 style="margin:0 0 4px;">{{ customer['holder_name'] }}</h2>
+            <p class="muted" style="margin:0;">
+                Account Number: <strong style="color:var(--cyan);font-family:monospace;">{{ customer['account_number'] }}</strong>
+            </p>
+        </div>
+        <div>
+            <span class="status-pill status-{{ customer['status']|lower }}">
+                ● {{ customer['status']|title }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:20px;">
+    <div class="section-heading">
+        <h2>Transaction History ({{ transactions|length }})</h2>
+    </div>
+
+    {% if transactions %}
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Balance After</th>
+                    <th>Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td><small class="muted">{{ t['created_at'] }}</small></td>
+                    <td>
+                        <span class="type-pill {{ 'deposit-pill' if t['transaction_type']|upper == 'DEPOSIT' else 'withdraw-pill' }}">
+                            {{ t['transaction_type'] }}
+                        </span>
+                    </td>
+                    <td>
+                        <strong class="{{ 'positive' if t['transaction_type']|upper == 'DEPOSIT' else 'negative' }}">
+                            {{ '+' if t['transaction_type']|upper == 'DEPOSIT' else '-' }}{{ money(t['amount_paise']) }}
+                        </strong>
+                    </td>
+                    <td>{{ money(t['balance_after_paise']) }}</td>
+                    <td><span class="reference-code">{{ t['reference'] }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" style="text-align:center;padding:40px 20px;">
+        <div class="empty-icon" style="font-size:36px;margin-bottom:12px;">📄</div>
+        <h3>No Transactions Recorded</h3>
+        <p class="muted">This customer has not performed any deposits or withdrawals yet.</p>
+    </div>
+    {% endif %}
+</div>
+
+<p style="margin-top:20px;">
+    <a href="{{ url_for('admin_customers') }}" class="btn-secondary">← Back to Customers</a>
+</p>
+{% endblock %}

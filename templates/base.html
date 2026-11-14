@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}NOVA BANK{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <a class="brand"
+           href="{{ url_for('admin_dashboard') if session.get('is_admin') else (url_for('dashboard') if session.get('account_id') else url_for('login')) }}">
+
+            <span class="brand-icon">N</span>
+            <span>NOVA <small>BANK</small></span>
+
+        </a>
+
+        {% if session.get('is_admin') %}
+
+        <nav class="navbar-nav">
+
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+
+            <a href="{{ url_for('admin_customers') }}">Manage Customers</a>
+
+            <a href="{{ url_for('admin_transactions') }}">All Transactions</a>
+
+            <form method="POST"
+                  action="{{ url_for('admin_logout') }}"
+                  class="logout-form">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button class="logout-btn" type="submit">
+                    Admin Logout
+                </button>
+
+            </form>
+
+        </nav>
+
+        {% elif session.get('account_id') %}
+
+        <nav class="navbar-nav">
+
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+
+            <a href="{{ url_for('profile') }}">My Profile</a>
+
+            <a href="{{ url_for('transaction') }}">Transactions</a>
+
+            <a href="{{ url_for('history') }}">History</a>
+
+            <a href="{{ url_for('change_pin') }}">Security</a>
+
+            <form method="POST"
+                  action="{{ url_for('logout') }}"
+                  class="logout-form">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <button class="logout-btn" type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </nav>
+
+        {% else %}
+
+        <nav class="navbar-nav">
+
+            <a href="{{ url_for('login') }}">Customer Login</a>
+
+            <a href="{{ url_for('register') }}">Create Account</a>
+
+            <a href="{{ url_for('admin_login') }}">Admin Portal</a>
+
+        </nav>
+
+        {% endif %}
+
+    </header>
+
+
+    <main class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% for category, message in messages %}
+
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+
+    <footer>
+        © 2026 NOVA BANK. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

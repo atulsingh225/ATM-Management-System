@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}All Transactions | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">OWNER CONTROL PANEL</p>
+        <h1>All Transactions</h1>
+        <p class="muted">Complete transaction ledger across all customer accounts.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">
+            ← Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <form method="GET" action="{{ url_for('admin_transactions') }}" class="search-form">
+        <div class="search-bar-row">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by customer name, account number or transaction reference..."
+                value="{{ search }}"
+            >
+            <button class="btn-primary btn-inline" type="submit">Search</button>
+            {% if search %}
+            <a href="{{ url_for('admin_transactions') }}" class="btn-secondary">
+                Clear
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<div class="card" style="margin-top:20px;">
+    <div class="section-heading">
+        <h2>Transaction Records ({{ transactions|length }})</h2>
+    </div>
+
+    {% if transactions %}
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Customer</th>
+                    <th>Account Number</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Balance After</th>
+                    <th>Reference</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td><small class="muted">{{ t['created_at'] }}</small></td>
+                    <td><strong>{{ t['holder_name'] }}</strong></td>
+                    <td><code style="color:var(--cyan);">{{ t['account_number'] }}</code></td>
+                    <td>
+                        <span class="type-pill {{ 'deposit-pill' if t['transaction_type']|upper == 'DEPOSIT' else 'withdraw-pill' }}">
+                            {{ t['transaction_type'] }}
+                        </span>
+                    </td>
+                    <td>
+                        <strong class="{{ 'positive' if t['transaction_type']|upper == 'DEPOSIT' else 'negative' }}">
+                            {{ '+' if t['transaction_type']|upper == 'DEPOSIT' else '-' }}{{ money(t['amount_paise']) }}
+                        </strong>
+                    </td>
+                    <td>{{ money(t['balance_after_paise']) }}</td>
+                    <td><span class="reference-code">{{ t['reference'] }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" style="text-align:center;padding:40px 20px;">
+        <div class="empty-icon" style="font-size:36px;margin-bottom:12px;">💳</div>
+        <h3>No Transactions Found</h3>
+        <p class="muted">No transactions matched your search criteria.</p>
+        <a href="{{ url_for('admin_transactions') }}" class="btn-secondary">Show All</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

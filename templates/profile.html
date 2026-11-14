@@ -1,0 +1,162 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Profile | NOVA BANK{% endblock %}
+
+{% block content %}
+
+<div class="login-layout">
+
+    <div class="login-intro">
+
+        <p class="eyebrow">NOVA BANK / ACCOUNT</p>
+
+        <h1>Your profile.<br>Your control.</h1>
+
+        <p class="intro-text">
+            Manage your personal information and keep your account
+            details updated securely.
+        </p>
+
+        <div class="login-features">
+            <div>✓ Secure customer profile</div>
+            <div>✓ Update contact information</div>
+            <div>✓ Account information at a glance</div>
+            <div>✓ Personal banking details</div>
+        </div>
+
+    </div>
+
+
+    <div class="login-card">
+
+        <div class="login-logo">N</div>
+
+        <h2>My Profile</h2>
+
+        <p class="muted">
+            Your registered account information
+        </p>
+
+
+        <!-- PERSONAL INFORMATION -->
+
+        <h3>Personal Information</h3>
+
+        <label>Full Name</label>
+
+        <input
+            type="text"
+            value="{{ account['holder_name'] }}"
+            readonly
+        >
+
+
+        <label>Account Number</label>
+
+        <input
+            type="text"
+            value="{{ account['account_number'] }}"
+            readonly
+        >
+
+
+        <label>Account Status</label>
+
+        <input
+            type="text"
+            value="{{ account['status'] }}"
+            readonly
+        >
+
+
+        <label>Account Type</label>
+
+        <input
+            type="text"
+            value="Savings Account"
+            readonly
+        >
+
+
+        <label>Available Balance</label>
+
+        <input
+            type="text"
+            value="{{ money(account['balance_paise']) }}"
+            readonly
+        >
+
+
+        <!-- EDIT CONTACT DETAILS -->
+
+        <form method="POST" action="{{ url_for('profile') }}">
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <h3>Update Contact Details</h3>
+
+            <label for="phone">Mobile Number</label>
+
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value="{{ (form_data['phone'] if form_data else account['phone']) or '' }}"
+                placeholder="Enter mobile number"
+                pattern="[6-9][0-9]{9}"
+                maxlength="10"
+                inputmode="numeric"
+                required
+            >
+
+
+            <label for="email">Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ (form_data['email'] if form_data else account['email']) or '' }}"
+                placeholder="Enter email address"
+                maxlength="254"
+                required
+            >
+
+
+            <label for="address">Residential Address</label>
+
+            <textarea
+                id="address"
+                name="address"
+                placeholder="Enter your complete address"
+                rows="3"
+                maxlength="300"
+                required
+            >{{ (form_data['address'] if form_data else account['address']) or '' }}</textarea>
+
+
+            <button type="submit" class="btn-primary">
+                Save Changes →
+            </button>
+
+        </form>
+
+
+        <div class="login-footer">
+
+            <a href="{{ url_for('dashboard') }}">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

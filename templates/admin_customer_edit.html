@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Edit Customer | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">OWNER CONTROL PANEL</p>
+        <h1>Edit Customer Details</h1>
+        <p class="muted">Update personal and contact information for {{ customer['holder_name'] }}.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('admin_customers') }}" class="btn-secondary">
+            ← Back to Customers
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="account-details-grid" style="margin-top:0;margin-bottom:24px;">
+        <div class="detail-box">
+            <span class="muted">Account Number</span>
+            <strong>{{ customer['account_number'] }}</strong>
+        </div>
+        <div class="detail-box">
+            <span class="muted">Account Status</span>
+            <strong>{{ customer['status']|title }}</strong>
+        </div>
+        <div class="detail-box">
+            <span class="muted">Current Balance</span>
+            <strong>{{ money(customer['balance_paise']) }}</strong>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_edit_customer', customer_id=customer['id']) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label for="holder_name">Full Name</label>
+        <input
+            type="text"
+            id="holder_name"
+            name="holder_name"
+            value="{{ form_data['holder_name'] }}"
+            minlength="2"
+            maxlength="100"
+            autocomplete="name"
+            required
+        >
+
+        <label for="phone">Mobile Number</label>
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value="{{ form_data['phone'] }}"
+            pattern="[6-9][0-9]{9}"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+            required
+        >
+
+        <label for="email">Email Address</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ form_data['email'] }}"
+            maxlength="254"
+            autocomplete="email"
+            required
+        >
+
+        <label for="address">Residential Address</label>
+        <textarea
+            id="address"
+            name="address"
+            rows="4"
+            minlength="5"
+            maxlength="300"
+            autocomplete="street-address"
+            required
+        >{{ form_data['address'] }}</textarea>
+
+        <button class="btn-primary" type="submit" style="margin-top:24px;">Save Customer Details</button>
+    </form>
+
+    <p style="margin-top:20px;">
+        <a href="{{ url_for('admin_customers') }}">← Back to Customers</a>
+    </p>
+</div>
+{% endblock %}

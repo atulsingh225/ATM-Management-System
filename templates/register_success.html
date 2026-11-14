@@ -1,0 +1,35 @@
+
+{% extends "base.html" %}
+
+{% block title %}Account Created | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="login-layout">
+
+    <div class="login-card">
+
+        <div class="login-logo">✓</div>
+
+        <h2>Account Created Successfully!</h2>
+
+        <p class="muted">
+            Welcome to NOVA BANK, {{ holder_name }}.
+        </p>
+
+        <p>Your new account number is:</p>
+
+        <h2>{{ account_number }}</h2>
+
+        <p class="muted">
+            Please save your account number.
+            You will need it to log in.
+        </p>
+
+        <a href="{{ url_for('login') }}" class="btn-primary">
+            Go to Login →
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

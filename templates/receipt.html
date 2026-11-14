@@ -1,0 +1,164 @@
+
+{% extends "base.html" %}
+
+{% block title %}Transaction Receipt | NOVA BANK{% endblock %}
+
+{% block content %}
+
+<div class="login-layout">
+    <div class="login-card receipt-card">
+
+        <div class="login-logo">N</div>
+
+        <h2>NOVA BANK</h2>
+        <p class="muted">Transaction Receipt</p>
+
+        <div class="receipt-status">
+            <h2>✓</h2>
+            <h3>Transaction Successful</h3>
+            <p class="muted">Your transaction has been recorded.</p>
+        </div>
+
+        <div class="receipt-amount">
+            <p class="muted">{{ transaction['transaction_type'] }}</p>
+            <h1>{{ money(transaction['amount_paise']) }}</h1>
+        </div>
+
+        <div class="receipt-details">
+
+            <div>
+                <span>Transaction ID</span>
+                <strong>{{ transaction['reference'] }}</strong>
+            </div>
+
+            <div>
+                <span>Date & Time</span>
+                <strong>{{ transaction['created_at'] }}</strong>
+            </div>
+
+            <div>
+                <span>Account Holder</span>
+                <strong>{{ account['holder_name'] }}</strong>
+            </div>
+
+            <div>
+                <span>Account Number</span>
+                <strong>{{ account['account_number'] }}</strong>
+            </div>
+
+            <div>
+                <span>Transaction Type</span>
+                <strong>{{ transaction['transaction_type'] }}</strong>
+            </div>
+
+            <div>
+                <span>Remaining Balance</span>
+                <strong>{{ money(transaction['balance_after_paise']) }}</strong>
+            </div>
+
+        </div>
+
+        <button class="btn-primary no-print"
+                onclick="window.print()">
+            Download / Print Receipt
+        </button>
+
+        <div class="login-footer no-print">
+            <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+
+        <p class="muted receipt-note">
+            Thank you for banking with NOVA BANK.
+        </p>
+
+    </div>
+</div>
+
+<style>
+.receipt-card {
+    max-width: 520px;
+    margin: auto;
+}
+
+.receipt-status {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.receipt-status h2 {
+    color: #45e0ad;
+    font-size: 38px;
+}
+
+.receipt-amount {
+    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 16px;
+    background: rgba(82, 216, 255, 0.08);
+}
+
+.receipt-details {
+    display: grid;
+    gap: 16px;
+    margin: 25px 0;
+}
+
+.receipt-details div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(150,150,150,0.2);
+}
+
+.receipt-details span {
+    color: #9ca3af;
+}
+
+.receipt-details strong {
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.receipt-note {
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .topbar, footer, .no-print {
+        display: none !important;
+    }
+
+    .login-layout, .login-card {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .receipt-details span,
+    .muted {
+        color: #555 !important;
+    }
+
+    .receipt-amount {
+        background: #f2f2f2 !important;
+    }
+
+    .receipt-details div {
+        border-bottom: 1px solid #ddd;
+    }
+}
+</style>
+
+{% endblock %}

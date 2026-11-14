@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="login-layout">
+
+    <div class="login-intro">
+        <p class="eyebrow">OWNER & STAFF ACCESS</p>
+        <h1>Management<br>& Control Portal.</h1>
+        <p class="intro-text">
+            Secure administrative control center for customer verification, transaction auditing, and system management.
+        </p>
+        <div class="login-features">
+            <div>✓ Customer approval & verification</div>
+            <div>✓ Comprehensive transaction auditing</div>
+            <div>✓ Real-time system metrics</div>
+            <div>✓ Account security controls</div>
+        </div>
+    </div>
+
+    <div class="login-card">
+        <div class="login-logo">N</div>
+
+        <p class="eyebrow">NOVA BANK MANAGEMENT</p>
+        <h2>Admin Login</h2>
+        <p class="muted">Authorized bank personnel and owner access only.</p>
+
+        <form method="POST" action="{{ url_for('admin_login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="username">Admin Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter admin username"
+                required
+                autocomplete="username"
+            >
+
+            <label for="password">Admin Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter admin password"
+                required
+                autocomplete="current-password"
+            >
+
+            <button type="submit" class="btn-primary">
+                Secure Admin Login →
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <a href="{{ url_for('login') }}">Back to Customer Login</a>
+        </div>
+
+        <p class="muted" style="margin-top:16px;font-size:12px;text-align:center;">
+            Restricted access. All login attempts are logged for security.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

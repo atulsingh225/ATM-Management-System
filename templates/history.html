@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction History | NOVA BANK{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">ACCOUNT ACTIVITY</span>
+        <h1>Transaction History</h1>
+        <p class="muted">Review your recent deposits and withdrawals.</p>
+    </div>
+    <a class="btn-secondary secondary-btn" href="{{ url_for('dashboard') }}">← Dashboard</a>
+</section>
+
+<section class="history-summary">
+    <div>
+        <span class="summary-icon">↗</span>
+        <div>
+            <strong>{{ transactions|length }}</strong>
+            <small>Transactions displayed</small>
+        </div>
+    </div>
+    <a class="btn-primary primary-btn" href="{{ url_for('transaction') }}" style="width:auto;margin:0;">＋ New Transaction</a>
+</section>
+
+<section class="card table-card" style="margin-top:20px;">
+    {% if transactions %}
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Type</th>
+                    <th>Date & Time</th>
+                    <th>Amount</th>
+                    <th>Balance After</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in transactions %}
+                <tr>
+                    <td><span class="reference-code">{{ item['reference'] }}</span></td>
+                    <td>
+                        <span class="type-pill {{ 'deposit-pill' if item['transaction_type']|upper == 'DEPOSIT' else 'withdraw-pill' }}">
+                            {{ item['transaction_type'] }}
+                        </span>
+                    </td>
+                    <td><small class="muted">{{ item['created_at'] }}</small></td>
+                    <td class="{{ 'positive' if item['transaction_type']|upper == 'DEPOSIT' else 'negative' }}">
+                        <strong>{{ '+' if item['transaction_type']|upper == 'DEPOSIT' else '-' }}{{ money(item['amount_paise']) }}</strong>
+                    </td>
+                    <td>{{ money(item['balance_after_paise']) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" style="text-align:center;padding:40px 20px;">
+        <div class="empty-icon" style="font-size:36px;margin-bottom:12px;">↗</div>
+        <h3>No Transactions Found</h3>
+        <p class="muted" style="margin:8px 0 16px;">Your completed deposits and withdrawals will appear here.</p>
+        <a class="btn-primary" href="{{ url_for('transaction') }}" style="width:auto;display:inline-flex;">Make a Transaction</a>
+    </div>
+    {% endif %}
+</section>
+
+<p class="muted field-help" style="margin-top:16px;font-size:12px;">Showing the latest 100 transactions for this account.</p>
+{% endblock %}

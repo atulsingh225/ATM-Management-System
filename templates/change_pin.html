@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Change PIN | NOVA BANK{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">ACCOUNT SECURITY</span>
+        <h1>Change ATM PIN</h1>
+        <p class="muted">Update your PIN to keep your account secure.</p>
+    </div>
+    <a class="btn-secondary secondary-btn" href="{{ url_for('dashboard') }}">← Dashboard</a>
+</section>
+
+<section class="pin-layout">
+    <div class="pin-info card">
+        <div class="info-icon">🔐</div>
+        <h2>Protect your account</h2>
+        <p class="muted">Choose a new four-digit PIN that is confidential and difficult for others to guess.</p>
+
+        <ul class="pin-tips" style="list-style:none;padding:0;margin-top:20px;display:grid;gap:12px;">
+            <li>✓ Enter your current PIN correctly.</li>
+            <li>✓ Your new PIN must contain exactly 4 digits.</li>
+            <li>✓ Confirm the new PIN before saving.</li>
+            <li>✓ Never share your PIN with anyone.</li>
+        </ul>
+    </div>
+
+    <div class="form-card card">
+        <h2>Update PIN</h2>
+        <p class="muted">Complete all fields below.</p>
+
+        <form method="POST" action="{{ url_for('change_pin') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <label for="old_pin">Current PIN</label>
+            <input
+                id="old_pin"
+                type="password"
+                name="old_pin"
+                inputmode="numeric"
+                pattern="[0-9]{4}"
+                maxlength="4"
+                placeholder="Enter current PIN"
+                required
+            >
+
+            <label for="new_pin">New PIN</label>
+            <input
+                id="new_pin"
+                type="password"
+                name="new_pin"
+                inputmode="numeric"
+                pattern="[0-9]{4}"
+                maxlength="4"
+                placeholder="Enter new 4-digit PIN"
+                required
+            >
+
+            <label for="confirm_pin">Confirm New PIN</label>
+            <input
+                id="confirm_pin"
+                type="password"
+                name="confirm_pin"
+                inputmode="numeric"
+                pattern="[0-9]{4}"
+                maxlength="4"
+                placeholder="Re-enter new PIN"
+                required
+            >
+
+            <button type="submit" class="btn-primary primary-btn full-width" style="margin-top:24px;">
+                Update PIN →
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

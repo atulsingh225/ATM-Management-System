@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">NOVA BANK · OWNER CONTROL PANEL</p>
+        <h1>Admin Dashboard</h1>
+        <p class="muted">Welcome back, {{ session.get('admin_username') }}. System overview and control center.</p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+        <a href="{{ url_for('admin_customers') }}" class="btn-primary" style="width:auto;margin:0;">
+            Manage Customers →
+        </a>
+    </div>
+</div>
+
+{% if pending_accounts > 0 %}
+<div class="alert" style="background:rgba(255,185,70,0.12);border:1px solid rgba(255,185,70,0.35);color:#ffb946;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-radius:14px;margin-bottom:24px;">
+    <div>
+        <strong>Action Required:</strong> {{ pending_accounts }} customer application{{ 's' if pending_accounts > 1 else '' }} awaiting review and approval.
+    </div>
+    <a href="{{ url_for('admin_customers', status='PENDING') }}" class="btn-sm btn-warning">
+        Review Applications →
+    </a>
+</div>
+{% endif %}
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <p class="stat-label">Total Customers</p>
+        <h2 class="stat-value">{{ total_customers }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label" style="color:var(--green);">Active Accounts</p>
+        <h2 class="stat-value" style="color:var(--green);">{{ active_accounts }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label" style="color:#ffb946;">Pending Approval</p>
+        <h2 class="stat-value" style="color:#ffb946;">{{ pending_accounts }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label" style="color:var(--red);">Blocked Accounts</p>
+        <h2 class="stat-value" style="color:var(--red);">{{ blocked_accounts }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">Closed Accounts</p>
+        <h2 class="stat-value">{{ closed_accounts }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">Rejected Accounts</p>
+        <h2 class="stat-value">{{ rejected_accounts }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label">Total Transactions</p>
+        <h2 class="stat-value">{{ total_transactions }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label" style="color:var(--cyan);">Total Deposits</p>
+        <h2 class="stat-value" style="color:var(--cyan);font-size:22px;">{{ money(total_deposits) }}</h2>
+    </div>
+    <div class="stat-card">
+        <p class="stat-label" style="color:var(--purple);">Total Withdrawals</p>
+        <h2 class="stat-value" style="color:var(--purple);font-size:22px;">{{ money(total_withdrawals) }}</h2>
+    </div>
+</div>
+
+<div class="quick-actions" style="margin:25px 0;">
+    <a class="quick-action" href="{{ url_for('admin_customers') }}">
+        <span class="action-icon security-icon">👥</span>
+        <span>
+            <strong>Customer Directory</strong>
+            <small>Approve, block, edit and manage customers</small>
+        </span>
+        <span class="action-arrow">→</span>
+    </a>
+
+    <a class="quick-action" href="{{ url_for('admin_transactions') }}">
+        <span class="action-icon history-icon">💳</span>
+        <span>
+            <strong>All Transactions</strong>
+            <small>Inspect deposits, withdrawals and audit logs</small>
+        </span>
+        <span class="action-arrow">→</span>
+    </a>
+
+    <a class="quick-action" href="{{ url_for('admin_customers', status='PENDING') }}">
+        <span class="action-icon deposit-icon">⏳</span>
+        <span>
+            <strong>Pending Requests</strong>
+            <small>{{ pending_accounts }} applications pending review</small>
+        </span>
+        <span class="action-arrow">→</span>
+    </a>
+</div>
+
+<div class="card" style="margin-top:25px;">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow" style="margin-bottom:4px;">AUDIT TRAIL</p>
+            <h2>Recent System Transactions</h2>
+        </div>
+        <a class="view-all" href="{{ url_for('admin_transactions') }}">
+            View All Transactions →
+        </a>
+    </div>
+
+    {% if recent_transactions %}
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Account Number</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_transactions %}
+                <tr>
+                    <td><strong>{{ item['holder_name'] }}</strong></td>
+                    <td>{{ item['account_number'] }}</td>
+                    <td>
+                        <span class="type-pill {{ 'deposit-pill' if item['transaction_type']|upper == 'DEPOSIT' else 'withdraw-pill' }}">
+                            {{ item['transaction_type'] }}
+                        </span>
+                    </td>
+                    <td><strong>{{ money(item['amount_paise']) }}</strong></td>
+                    <td><span class="reference-code">{{ item['reference'] }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="muted">No transactions found in system records.</p>
+    {% endif %}
+</div>
+{% endblock %}

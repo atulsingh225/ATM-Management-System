@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block title %}Customers | NOVA BANK{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">OWNER CONTROL PANEL</p>
+        <h1>Customer Management</h1>
+        <p class="muted">Search customer accounts, review applications, and manage account statuses.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">
+            ← Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- STATUS FILTER TABS -->
+<div class="filter-tabs">
+    <a href="{{ url_for('admin_customers', status='ALL', search=search) }}"
+       class="filter-tab {% if selected_status == 'ALL' %}active{% endif %}">
+        All Accounts
+        {% if status_counts %}<span class="badge">{{ status_counts['total'] }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_customers', status='PENDING', search=search) }}"
+       class="filter-tab {% if selected_status == 'PENDING' %}active{% endif %}"
+       style="{% if status_counts and status_counts['pending'] > 0 %}border-color:#ffb946;color:#ffb946;{% endif %}">
+        Pending Approval
+        {% if status_counts %}<span class="badge" style="{% if status_counts['pending'] > 0 %}background:#ffb946;color:#080e1c;font-weight:bold;{% endif %}">{{ status_counts['pending'] }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_customers', status='ACTIVE', search=search) }}"
+       class="filter-tab {% if selected_status == 'ACTIVE' %}active{% endif %}">
+        Active
+        {% if status_counts %}<span class="badge">{{ status_counts['active'] }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_customers', status='BLOCKED', search=search) }}"
+       class="filter-tab {% if selected_status == 'BLOCKED' %}active{% endif %}">
+        Blocked
+        {% if status_counts %}<span class="badge">{{ status_counts['blocked'] }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_customers', status='CLOSED', search=search) }}"
+       class="filter-tab {% if selected_status == 'CLOSED' %}active{% endif %}">
+        Closed
+        {% if status_counts %}<span class="badge">{{ status_counts['closed'] }}</span>{% endif %}
+    </a>
+    <a href="{{ url_for('admin_customers', status='REJECTED', search=search) }}"
+       class="filter-tab {% if selected_status == 'REJECTED' %}active{% endif %}">
+        Rejected
+        {% if status_counts %}<span class="badge">{{ status_counts['rejected'] }}</span>{% endif %}
+    </a>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="card">
+    <form method="GET" action="{{ url_for('admin_customers') }}" class="search-form">
+        <input type="hidden" name="status" value="{{ selected_status }}">
+        <div class="search-bar-row">
+            <input
+                type="search"
+                id="customer-search"
+                name="search"
+                placeholder="Search by customer name, account number, phone or email..."
+                value="{{ search }}"
+            >
+            <button class="btn-primary btn-inline" type="submit">Search</button>
+            {% if search or selected_status != 'ALL' %}
+            <a href="{{ url_for('admin_customers') }}" class="btn-secondary">
+                Clear Filters
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<!-- CUSTOMER TABLE -->
+<div class="card" style="margin-top:20px;">
+    <div class="section-heading">
+        <h2>Customer Accounts ({{ customers|length }})</h2>
+        {% if selected_status != 'ALL' %}
+        <span class="status-pill status-{{ selected_status|lower }}">
+            Filter: {{ selected_status|title }}
+        </span>
+        {% endif %}
+    </div>
+
+    {% if customers %}
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer Name & Address</th>
+                    <th>Account Number</th>
+                    <th>Contact Info</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>
+                        <strong style="font-size:14px;color:white;">{{ customer['holder_name'] }}</strong>
+                        {% if customer['address'] %}
+                        <br><small class="muted">{{ customer['address'] }}</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <strong style="color:var(--cyan);font-family:monospace;font-size:14px;">
+                            {{ customer['account_number'] }}
+                        </strong>
+                    </td>
+                    <td>
+                        {% if customer['phone'] %}
+                        <span>📞 {{ customer['phone'] }}</span>
+                        {% endif %}
+                        {% if customer['phone'] and customer['email'] %}<br>{% endif %}
+                        {% if customer['email'] %}
+                        <span class="muted" style="font-size:12px;">✉️ {{ customer['email'] }}</span>
+                        {% endif %}
+                        {% if not customer['phone'] and not customer['email'] %}
+                        <span class="muted">Not provided</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <strong style="font-size:14px;">{{ money(customer['balance_paise']) }}</strong>
+                    </td>
+                    <td>
+                        <span class="status-pill status-{{ customer['status']|lower }}">
+                            ● {{ customer['status']|title }}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                            <a href="{{ url_for('admin_edit_customer', customer_id=customer['id']) }}" class="btn-sm btn-secondary">
+                                Edit details
+                            </a>
+                            <a href="{{ url_for('admin_customer_transactions', customer_id=customer['id']) }}" class="btn-sm btn-secondary">
+                                Transactions
+                            </a>
+
+                            {% if customer['status'] == 'PENDING' %}
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='approve') }}" style="display:inline;width:auto;margin:0;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-success">✓ Approve</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='reject') }}" style="display:inline;width:auto;margin:0;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-danger">✕ Reject</button>
+                            </form>
+                            {% elif customer['status'] == 'ACTIVE' %}
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='block') }}" style="display:inline;width:auto;margin:0;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-warning">Block</button>
+                            </form>
+                            {% if customer['balance_paise'] == 0 %}
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='close') }}" style="display:inline;width:auto;margin:0;" onsubmit="return confirm('Close this account permanently?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-danger">Close</button>
+                            </form>
+                            {% endif %}
+                            {% elif customer['status'] == 'BLOCKED' %}
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='unblock') }}" style="display:inline;width:auto;margin:0;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-success">Unblock</button>
+                            </form>
+                            {% if customer['balance_paise'] == 0 %}
+                            <form method="POST" action="{{ url_for('admin_customer_action', customer_id=customer['id'], action='close') }}" style="display:inline;width:auto;margin:0;" onsubmit="return confirm('Close this account permanently?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-sm btn-danger">Close</button>
+                            </form>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" style="text-align:center;padding:40px 20px;">
+        <div class="empty-icon" style="font-size:36px;margin-bottom:12px;">🔍</div>
+        <h3>No Customers Found</h3>
+        <p class="muted" style="margin:8px 0 16px;">No customer records match your current search query or status filter.</p>
+        <a href="{{ url_for('admin_customers') }}" class="btn-secondary">
+            Show All Customers
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
