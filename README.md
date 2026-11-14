@@ -17,10 +17,7 @@ A full-stack, secure ATM and Core Banking Management System featuring a **Custom
 Experience the live production application deployed on Vercel:
 
 - 🚀 **Live Banking Application:** [https://atm-management-system-atulsingh225.vercel.app](https://atm-management-system-atulsingh225.vercel.app)
-- 🤖 **AI Banking Copilot:** [https://atm-management-system-ai.vercel.app](https://atm-management-system-ai.vercel.app)
 - ⚡ **Deploy Your Own Instance with 1-Click:**
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fatulsingh225%2FATM-Management-System)
 
 ---
 
